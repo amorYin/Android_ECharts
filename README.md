@@ -16,7 +16,7 @@ Baidu ECharts in Android
 第二步. 在 `dependency` 中添加以下依赖
 
 	dependencies {
-		implementation 'com.github.abel533:ECharts:3.0.06'
+		implementation 'com.github.abel533:ECharts:3.0.0.6'
 	        implementation 'com.github.amorYin:Android_ECharts:v0.0.3'
 	}
 ## EChartView使用指南
