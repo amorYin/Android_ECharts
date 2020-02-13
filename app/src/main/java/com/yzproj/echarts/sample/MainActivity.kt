@@ -1,4 +1,4 @@
-package com.yzproj.echarts
+package com.yzproj.echarts.sample
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

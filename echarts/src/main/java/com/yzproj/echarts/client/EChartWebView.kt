@@ -138,7 +138,7 @@ class EChartWebView @JvmOverloads constructor(context: Context, attrs: Attribute
         if (dataSource!=null){
             var removeOptions = dataSource!!.removeEChartActionEvents()
             if (!removeOptions.isNullOrEmpty()){
-                for (e:EChartsEventAction in removeOptions!!.iterator()){
+                for (e:EChartsEventAction in removeOptions.iterator()){
                     val action = e.ation
                     val call = "javascript:removeEchartActionHandler('" + action + "')"
                     loadUrl(call)
@@ -147,7 +147,7 @@ class EChartWebView @JvmOverloads constructor(context: Context, attrs: Attribute
 
             var addOptions = dataSource!!.addEChartActionEvents()
             if (!addOptions.isNullOrEmpty()){
-                for (e:EChartsEventAction in addOptions!!.iterator()){
+                for (e:EChartsEventAction in addOptions.iterator()){
                     val action = e.ation
                     val call = "javascript:addEchartActionHandler('" + action + "')"
                     loadUrl(call)
