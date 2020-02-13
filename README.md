@@ -11,7 +11,7 @@ Baidu ECharts in Android
 			...
 			maven { url 'https://jitpack.io' }
 		}
-	}Copy
+	}
 
 第二步. 在 `dependency` 中添加以下依赖
 
