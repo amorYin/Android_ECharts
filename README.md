@@ -20,7 +20,7 @@ Baidu ECharts in Android
 	        implementation 'com.github.amorYin:Android_ECharts:v0.0.3'
 	}
 ## EChartView使用指南
-在 使用的类的 `layout` 文件中引入
+在 使用的Activity的 `layout` 文件中引入
 ```
     <com.yzproj.echarts.client.EChartView
        	android:id="@+id/chartView"
@@ -28,11 +28,67 @@ Baidu ECharts in Android
         android:layout_height="match_parent"
         android:layout_marginBottom="56dp"/>
 ```
-类中初始化chartView，必须实现`EChartsDataSource` 接口,可实现`EChartsEventHandler`、`EChartsWebClient`两个接口
+Activity中初始化chartView，必须实现`EChartsDataSource` 接口,可实现`EChartsEventHandler`、`EChartsWebClient`两个接口
 ```
 	chartView = findViewById(R.id.chartView);
         chartView.setDataSource(this);//EChartsDataSource 必须实现
         chartView.setDelegate(this);//EChartsWebClient 页面加载回调 
+```
+Activity例子
+```
+***
+class MainActivity : AppCompatActivity(),EChartsDataSource, EChartsEventHandler {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        chartView.setType(8)
+        chartView.setDataSource(this)
+        chartView.setDelegate(this)
+    }
+
+    override fun echartOptions(): GsonOption? {
+        val option = GsonOption()
+        option.legend("高度(km)与气温(°C)变化关系")
+        option.toolbox().show(true).feature(Tool.mark, Tool.dataView, MagicType(Magic.line, Magic.bar), Tool.restore, Tool.saveAsImage)
+        option.calculable(true)
+        option.tooltip().trigger(Trigger.axis).formatter("Temperature : <br/>{b}km : {c}°C")
+
+        val valueAxis = ValueAxis()
+        valueAxis.axisLabel().formatter("{value} °C")
+        option.xAxis(valueAxis)
+
+        val categoryAxis = CategoryAxis()
+        categoryAxis.axisLine().onZero(false)
+        categoryAxis.axisLabel().formatter("{value} km")
+        categoryAxis.boundaryGap(false)
+        categoryAxis.data(0, 10, 20, 30, 40, 50, 60, 70, 80)
+        categoryAxis.clickable = true
+        option.yAxis(categoryAxis)
+
+        val line = Line()
+        line.smooth(true).name("高度(km)与气温(°C)变化关系").data(15, -50, -56.5, -46.5, -22.1, -2.5, -27.7, -55.7, -76.5).itemStyle().normal().lineStyle().shadowColor("rgba(0,0,0,0.4)")
+        option.series(line)
+        return option
+    }
+
+    override fun echartOptionsString(): String {
+        return  null
+    }
+
+    override fun removeEChartActionEvents(): Array<EChartsEventAction> {
+        return arrayOf()
+    }
+
+    override fun addEChartActionEvents(): Array<EChartsEventAction> {
+        return arrayOf(EChartsEventAction.Click,EChartsEventAction.DataRangeSelected,EChartsEventAction.LegendSelectChanged)
+    }
+
+    override fun onHandlerResponseAction(action: EChartsEventAction,data:String?) {
+        Toast.makeText(baseContext,data,Toast.LENGTH_SHORT).show()
+    }
+}
+
 ```
 ---
 ### `EChartsDataSource`接口有四个方法
@@ -42,7 +98,6 @@ Baidu ECharts in Android
     fun removeEChartActionEvents():Array<EChartsEventAction>{return arrayOf()} //删除事件集合
     fun addEChartActionEvents():Array<EChartsEventAction>{return arrayOf()} //添加事件集合
 ```
----
 ### `EChartsEventHandler`接口有四个方法
 ```
     fun onHandlerResponseAction(action:EChartsEventAction,data:String?)//如果实现了dataSource的添加事件方法，事件触发回调
