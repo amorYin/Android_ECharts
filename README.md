@@ -90,6 +90,6 @@ Baidu ECharts in Android
 ## 写在最后
 因为某个项目使用，所以功能是定制化的，如发现问题或者改善的意见，欢迎留言。
 
-#参考
+# 参考
 >liuzh项目[ECharts](https://github.com/abel533/ECharts)
->tomas项目[EChartsAndroid](https://github.com/kontafu/EChartsAndroid)
+>>tomas项目[EChartsAndroid](https://github.com/kontafu/EChartsAndroid)
