@@ -92,8 +92,9 @@ class MainActivity : AppCompatActivity(),EChartsDataSource, EChartsEventHandler 
 ```
 ---
 ### `EChartsDataSource`接口有四个方法
+>[GsonOption](https://github.com/amorYin/ECharts)
 ```
-    fun echartOptions(): GsonOption? {return null} //返回一个[GsonOption](https://github.com/amorYin/ECharts)，优先使用，和第二个方法必须实现一个
+    fun echartOptions(): GsonOption? {return null} //返回一个GsonOption，优先使用，和第二个方法必须实现一个
     fun echartOptionsString(): String{ return GsonOption().toString() } //返回json字符串
     fun removeEChartActionEvents():Array<EChartsEventAction>{return arrayOf()} //删除事件集合
     fun addEChartActionEvents():Array<EChartsEventAction>{return arrayOf()} //添加事件集合
