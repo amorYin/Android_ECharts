@@ -6,7 +6,7 @@ Baidu ECharts in Android
 
 ![图标效果](https://github.com/amorYin/Android_ECharts/blob/master/images/331581665532_.pic.jpg)![地图效果](https://github.com/amorYin/Android_ECharts/blob/master/images/341581665533_.pic.jpg)
 
-![chart点击效果](https://github.com/amorYin/Android_ECharts/blob/master/images/331581665536_.pic.jpg)![两个chart效果](https://github.com/amorYin/Android_ECharts/blob/master/images/331581665535_.pic.jpg)
+![chart点击效果](https://github.com/amorYin/Android_ECharts/blob/master/images/371581665536_.pic.jpg)![两个chart效果](https://github.com/amorYin/Android_ECharts/blob/master/images/361581665535_.pic.jpg)
 
 ## 集成指南
 第一步. 在您的主项目`build.gradle`添加以下内容:
