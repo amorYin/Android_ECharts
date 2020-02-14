@@ -2,6 +2,15 @@
 当前版本[![](https://jitpack.io/v/amorYin/Android_ECharts.svg)](https://jitpack.io/#amorYin/Android_ECharts)
 ---
 Baidu ECharts in Android
+## Demo截图
+
+![图标效果](https://github.com/amorYin/Android_ECharts/blob/master/images/331581665532_.pic.jpg)
+
+![地图效果](https://github.com/amorYin/Android_ECharts/blob/master/images/341581665533_.pic.jpg)
+
+![chart点击效果](https://github.com/amorYin/Android_ECharts/blob/master/images/331581665536_.pic.jpg)
+
+![两个chart效果](https://github.com/amorYin/Android_ECharts/blob/master/images/331581665535_.pic.jpg)
 
 ## 集成指南
 第一步. 在您的主项目`build.gradle`添加以下内容:
@@ -47,7 +56,7 @@ class MainActivity : AppCompatActivity(),EChartsDataSource, EChartsEventHandler 
         chartView.setDelegate(this)
     }
 
-    override fun echartOptions(): GsonOption? {
+    override fun echartOptions(view:View?): GsonOption? {
         val option = GsonOption()
         option.legend("高度(km)与气温(°C)变化关系")
         option.toolbox().show(true).feature(Tool.mark, Tool.dataView, MagicType(Magic.line, Magic.bar), Tool.restore, Tool.saveAsImage)
@@ -72,19 +81,19 @@ class MainActivity : AppCompatActivity(),EChartsDataSource, EChartsEventHandler 
         return option
     }
 
-    override fun echartOptionsString(): String {
-        return  null
+    override fun echartOptionsString(view:View?): String {
+        return  super.echartOptionsString(view)
     }
 
-    override fun removeEChartActionEvents(): Array<EChartsEventAction> {
+    override fun removeEChartActionEvents(view:View?): Array<EChartsEventAction> {
         return arrayOf()
     }
 
-    override fun addEChartActionEvents(): Array<EChartsEventAction> {
+    override fun addEChartActionEvents(view:View?): Array<EChartsEventAction> {
         return arrayOf(EChartsEventAction.Click,EChartsEventAction.DataRangeSelected,EChartsEventAction.LegendSelectChanged)
     }
 
-    override fun onHandlerResponseAction(action: EChartsEventAction,data:String?) {
+    override fun onHandlerResponseAction(view:View?,action: EChartsEventAction,data:String?) {
         Toast.makeText(baseContext,data,Toast.LENGTH_SHORT).show()
     }
 }
@@ -94,14 +103,16 @@ class MainActivity : AppCompatActivity(),EChartsDataSource, EChartsEventHandler 
 ### `EChartsDataSource`接口有四个方法
 >[GsonOption](https://github.com/amorYin/ECharts)
 ```
-    fun echartOptions(): GsonOption? {return null} //返回一个GsonOption，优先使用，和第二个方法必须实现一个
-    fun echartOptionsString(): String{ return GsonOption().toString() } //返回json字符串
-    fun removeEChartActionEvents():Array<EChartsEventAction>{return arrayOf()} //删除事件集合
-    fun addEChartActionEvents():Array<EChartsEventAction>{return arrayOf()} //添加事件集合
+    fun echartOptions(view: View?): GsonOption? {return null} //返回一个GsonOption，优先使用，和第二个方法必须实现一个
+    fun echartOptionsString(view: View?): String{ return GsonOption().toString() } //返回json字符串
+    fun removeEChartActionEvents(view: View?):Array<EChartsEventAction>{return arrayOf()} //删除事件集合
+    fun addEChartActionEvents(view: View?):Array<EChartsEventAction>{return arrayOf()} //添加事件集合
 ```
 ### `EChartsEventHandler`接口有四个方法
 ```
-    fun onHandlerResponseAction(action:EChartsEventAction,data:String?)//如果实现了dataSource的添加事件方法，事件触发回调
+    //如果实现了dataSource的添加事件方法的事件触发回调
+    fun onHandlerResponseAction(view: View?,action:EChartsEventAction,data:String?)
+    fun onHandlerResponseRemoveAction(view: View?,action:EChartsEventAction){}
 ```
 ### `EChartsEventAction`事件枚举,目前支持下列事件
 ```
@@ -123,25 +134,25 @@ class MainActivity : AppCompatActivity(),EChartsDataSource, EChartsEventHandler 
 ```
 ### `EChartsWebClient`是页面加载的web接口，如果想要控制可实现
 ```
-    fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?){}
+    fun shouldOverrideUrlLoading(view: View?, webView: WebView?, request: WebResourceRequest?){}
 
-    fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?){}
+    fun onPageStarted(view: View?, webView: WebView?, url: String?, favicon: Bitmap?){}
 
-    fun onPageFinished(view: WebView?, url: String?){}
+    fun onPageFinished(view: View?, webView: WebView?, url: String?){}
 
-    fun onLoadResource(view: WebView?, url: String?){}
+    fun onLoadResource(view: View?, webView: WebView?, url: String?){}
 
-    fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?){}
+    fun onReceivedError(view: View?, webView: WebView?, request: WebResourceRequest?, error: WebResourceError?){}
 
-    fun onJsAlert(view: WebView?, url: String?, message: String?, result: JsResult?){}
+    fun onJsAlert(view: View?, webView: WebView?, url: String?, message: String?, result: JsResult?){}
 
-    fun onJsConfirm(view: WebView?, url: String?, message: String?, result: JsResult?){}
+    fun onJsConfirm(view: View?, webView: WebView?, url: String?, message: String?, result: JsResult?){}
 
-    fun onJsPrompt(view: WebView?, url: String?, message: String?, defaultValue: String?, result: JsPromptResult?){}
+    fun onJsPrompt(view: View?, webView: WebView?, url: String?, message: String?, defaultValue: String?, result: JsPromptResult?){}
 
-    fun onProgressChanged(view: WebView?, newProgress: Int){}
+    fun onProgressChanged(view: View?, webView: WebView?, newProgress: Int){}
 
-    fun onReceivedTitle(view: WebView?, title: String?){}
+    fun onReceivedTitle(view: View?, webView: WebView?, title: String?){}
 ```
 ## 写在最后
 因为某个项目使用，所以功能是定制化的，如发现问题或者改善的意见，欢迎留言。
