@@ -17,7 +17,7 @@ Baidu ECharts in Android
 
 	dependencies {
 		implementation 'com.github.abel533:ECharts:3.0.0.6'
-	        implementation 'com.github.amorYin:Android_ECharts:0.0.5'
+	        implementation 'com.github.amorYin:Android_ECharts:v0.0.3'
 	}
 ## EChartView使用指南
 在 使用的Activity的 `layout` 文件中引入
