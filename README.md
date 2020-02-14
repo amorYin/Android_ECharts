@@ -4,7 +4,7 @@
 Baidu ECharts in Android
 ## Demo截图
 
-<div align=center><img src="https://github.com/amorYin/Android_ECharts/blob/master/images/331581665532_.pic.jpg" width = "50%" height = "auto"/><img src="https://github.com/amorYin/Android_ECharts/blob/master/images/341581665533_.pic.jpg" width = "50%" height = "auto"/></div>
+<div><img src="https://github.com/amorYin/Android_ECharts/blob/master/images/331581665532_.pic.jpg" width = "50%" height = "auto"/><img src="https://github.com/amorYin/Android_ECharts/blob/master/images/341581665533_.pic.jpg" width = "50%" height = "auto"/></div>
 
 ![chart点击效果](https://github.com/amorYin/Android_ECharts/blob/master/images/371581665536_.pic.jpg)![两个chart效果](https://github.com/amorYin/Android_ECharts/blob/master/images/361581665535_.pic.jpg)
 
