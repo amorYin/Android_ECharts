@@ -5,26 +5,27 @@
 package com.yzproj.echarts.face
 
 import android.graphics.Bitmap
+import android.view.View
 import android.webkit.*
 
 interface EChartsWebClient {
-    fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?){}
+    fun shouldOverrideUrlLoading(view: View?, webView: WebView?, request: WebResourceRequest?){}
 
-    fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?){}
+    fun onPageStarted(view: View?, webView: WebView?, url: String?, favicon: Bitmap?){}
 
-    fun onPageFinished(view: WebView?, url: String?){}
+    fun onPageFinished(view: View?, webView: WebView?, url: String?){}
 
-    fun onLoadResource(view: WebView?, url: String?){}
+    fun onLoadResource(view: View?, webView: WebView?, url: String?){}
 
-    fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?){}
+    fun onReceivedError(view: View?, webView: WebView?, request: WebResourceRequest?, error: WebResourceError?){}
 
-    fun onJsAlert(view: WebView?, url: String?, message: String?, result: JsResult?){}
+    fun onJsAlert(view: View?, webView: WebView?, url: String?, message: String?, result: JsResult?){}
 
-    fun onJsConfirm(view: WebView?, url: String?, message: String?, result: JsResult?){}
+    fun onJsConfirm(view: View?, webView: WebView?, url: String?, message: String?, result: JsResult?){}
 
-    fun onJsPrompt(view: WebView?, url: String?, message: String?, defaultValue: String?, result: JsPromptResult?){}
+    fun onJsPrompt(view: View?, webView: WebView?, url: String?, message: String?, defaultValue: String?, result: JsPromptResult?){}
 
-    fun onProgressChanged(view: WebView?, newProgress: Int){}
+    fun onProgressChanged(view: View?, webView: WebView?, newProgress: Int){}
 
-    fun onReceivedTitle(view: WebView?, title: String?){}
+    fun onReceivedTitle(view: View?, webView: WebView?, title: String?){}
 }

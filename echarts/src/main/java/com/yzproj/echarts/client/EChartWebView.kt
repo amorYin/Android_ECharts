@@ -48,6 +48,8 @@ class EChartWebView @JvmOverloads constructor(context: Context, attrs: Attribute
      *
      */
     private var chartLoaded:Boolean = false
+
+    private val mWebView:WebView = this;
     /**
      * dataSource
      */
@@ -84,8 +86,8 @@ class EChartWebView @JvmOverloads constructor(context: Context, attrs: Attribute
             @JavascriptInterface
             get() {
                 if (dataSource!=null){
-                    val option = dataSource!!.echartOptions()
-                    if (option == null) return  dataSource!!.echartOptionsString()
+                    val option = dataSource!!.echartOptions(mWebView)
+                    if (option == null) return  dataSource!!.echartOptionsString(mWebView)
                     return option.toString()
                 }
                 return null
@@ -110,16 +112,12 @@ class EChartWebView @JvmOverloads constructor(context: Context, attrs: Attribute
 
         @JavascriptInterface
         fun removeEChartActionEventResponse(action: String){
-            if (delegate != null){
-                delegate!!.onHandlerResponseRemoveAction(EChartsEventAction.convert(action))
-            }
+            delegate?.onHandlerResponseRemoveAction(mWebView,EChartsEventAction.convert(action))
         }
 
         @JavascriptInterface
         fun onEChartActionEventResponse(action: String,data:String?){
-            if (delegate != null){
-                delegate!!.onHandlerResponseAction(EChartsEventAction.convert(action),data)
-            }
+            delegate?.onHandlerResponseAction(mWebView,EChartsEventAction.convert(action),data)
         }
     }
 
@@ -138,7 +136,7 @@ class EChartWebView @JvmOverloads constructor(context: Context, attrs: Attribute
      */
     fun reloadActions(){
         if (dataSource!=null){
-            var removeOptions = dataSource!!.removeEChartActionEvents()
+            var removeOptions = dataSource!!.removeEChartActionEvents(mWebView)
             if (!removeOptions.isNullOrEmpty()){
                 for (e:EChartsEventAction in removeOptions.iterator()){
                     val action = e.ation
@@ -147,7 +145,7 @@ class EChartWebView @JvmOverloads constructor(context: Context, attrs: Attribute
                 }
             }
 
-            var addOptions = dataSource!!.addEChartActionEvents()
+            var addOptions = dataSource!!.addEChartActionEvents(mWebView)
             if (!addOptions.isNullOrEmpty()){
                 for (e:EChartsEventAction in addOptions.iterator()){
                     val action = e.ation
@@ -174,30 +172,30 @@ class EChartWebView @JvmOverloads constructor(context: Context, attrs: Attribute
         webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                 view?.loadUrl(url)
-                client?.shouldOverrideUrlLoading(view,request)
+                client?.shouldOverrideUrlLoading(mWebView,view,request)
                 return true
             }
 
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                client?.onPageStarted(view,url,favicon)
+                client?.onPageStarted(mWebView,view,url,favicon)
                 super.onPageStarted(view, url, favicon)
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
-                client?.onPageFinished(view,url)
+                client?.onPageFinished(mWebView,view,url)
                 if(chartLoaded)reloadActions()
                 super.onPageFinished(view, url)
             }
 
             override fun onLoadResource(view: WebView?, url: String?) {
-                client?.onLoadResource(view,url)
+                client?.onLoadResource(mWebView,view,url)
                 super.onLoadResource(view, url)
             }
 
             override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
     //				view.loadData(errorHtml, "text/html; charset=UTF-8", null);
                 hideLoading()
-                client?.onReceivedError(view,request,error)
+                client?.onReceivedError(mWebView,view,request,error)
                 super.onReceivedError(view, request, error)
             }
         }
@@ -205,27 +203,27 @@ class EChartWebView @JvmOverloads constructor(context: Context, attrs: Attribute
         // 设置WebChromeClient
         webChromeClient = object : WebChromeClient() {
             override fun onJsAlert(view: WebView?, url: String?, message: String?, result: JsResult?): Boolean {
-                client?.onJsAlert(view,url,message,result)
+                client?.onJsAlert(mWebView,view,url,message,result)
                 return super.onJsAlert(view, url, message, result)
             }
 
             override fun onJsConfirm(view: WebView?, url: String?, message: String?, result: JsResult?): Boolean {
-                client?.onJsConfirm(view,url,message,result)
+                client?.onJsConfirm(mWebView,view,url,message,result)
                 return super.onJsConfirm(view, url, message, result)
             }
 
             override fun onJsPrompt(view: WebView?, url: String?, message: String?, defaultValue: String?, result: JsPromptResult?): Boolean {
-                client?.onJsPrompt(view,url,message,defaultValue,result)
+                client?.onJsPrompt(mWebView,view,url,message,defaultValue,result)
                 return super.onJsPrompt(view, url, message, defaultValue, result)
             }
 
             override fun onProgressChanged(view: WebView?, newProgress: Int) {
-                client?.onProgressChanged(view,newProgress)
+                client?.onProgressChanged(mWebView,view,newProgress)
                 super.onProgressChanged(view, newProgress)
             }
 
             override fun onReceivedTitle(view: WebView?, title: String?) {
-                client?.onReceivedTitle(view,title)
+                client?.onReceivedTitle(mWebView,view,title)
                 super.onReceivedTitle(view, title)
             }
         }

@@ -4,10 +4,12 @@
 
 package com.yzproj.echarts.face
 
+import android.view.View
+
 /**
  * delegate
  */
 interface EChartsEventHandler {
-    fun onHandlerResponseAction(action:EChartsEventAction,data:String?)
-    fun onHandlerResponseRemoveAction(action:EChartsEventAction){}
+    fun onHandlerResponseAction(view: View?, action:EChartsEventAction, data:String?)
+    fun onHandlerResponseRemoveAction(view: View?,action:EChartsEventAction){}
 }

@@ -12,19 +12,24 @@ import android.view.View
 import android.webkit.*
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import com.github.abel533.echarts.json.GsonOption
 import com.yzproj.echarts.R
 import com.yzproj.echarts.face.EChartsDataSource
+import com.yzproj.echarts.face.EChartsEventAction
 import com.yzproj.echarts.face.EChartsEventHandler
 import com.yzproj.echarts.face.EChartsWebClient
 
 class EChartView @JvmOverloads constructor(private val mContext: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
-    : LinearLayout(mContext, attrs, defStyle), EChartsWebClient{
+    : LinearLayout(mContext, attrs, defStyle), EChartsWebClient,EChartsDataSource,EChartsEventHandler{
 
     internal var mWebView: EChartWebView? = null
     internal var mProgressBar: ProgressBar? = null
     internal var client: EChartsWebClient? = null
+    private var delegate: EChartsEventHandler? = null
+    private var dataSource: EChartsDataSource? = null
 
-    var url: String? = null
+    internal var url: String? = null
+    private var showProgressBar:Boolean = true
 
     init {
         initView(mContext)
@@ -35,6 +40,8 @@ class EChartView @JvmOverloads constructor(private val mContext: Context, attrs:
         mWebView = view.findViewById(R.id.web_view) as EChartWebView
         mProgressBar = view.findViewById(R.id.progress_bar) as ProgressBar
         mWebView!!.setClient(this)
+        mWebView!!.setDelegate(this)
+        mWebView!!.setDataSource(this)
         setType(-1);
     }
 
@@ -42,17 +49,22 @@ class EChartView @JvmOverloads constructor(private val mContext: Context, attrs:
     private fun setType(type: Int) {
         mWebView!!.setType(type)
     }
+    fun isShowProgressBar(show:Boolean){
+        showProgressBar = show
+    }
     //  webview事件代理
     fun setClient(data: EChartsWebClient?){
         client = data
     }
     //数据源代理
     fun setDataSource(data: EChartsDataSource) {
-        mWebView!!.setDataSource(data)
+//        mWebView!!.setDataSource(data)
+        dataSource = data
     }
     // 自定义事件代理
     fun setDelegate(data: EChartsEventHandler) {
-        mWebView!!.setDelegate(data)
+//        mWebView!!.setDelegate(data)
+        delegate = data
     }
 
     fun loadUrl(url: String?) {
@@ -78,47 +90,74 @@ class EChartView @JvmOverloads constructor(private val mContext: Context, attrs:
         })
     }
 
-    override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?) {
-        client?.shouldOverrideUrlLoading(view,request)
+    override fun shouldOverrideUrlLoading(view: View?,webView: WebView?, request: WebResourceRequest?) {
+        client?.shouldOverrideUrlLoading(view,webView,request)
     }
 
-    override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?){
-        mProgressBar!!.visibility = View.VISIBLE
-        client?.onPageStarted(view,url,favicon)
+    override fun onPageStarted(view: View?,webView: WebView?, url: String?, favicon: Bitmap?){
+        if(showProgressBar)mProgressBar!!.visibility = View.VISIBLE
+        client?.onPageStarted(view,webView,url,favicon)
     }
 
-    override fun onPageFinished(view: WebView?, url: String?){
-        mProgressBar!!.visibility = View.GONE
-        client?.onPageFinished(view,url)
+    override fun onPageFinished(view: View?,webView: WebView?, url: String?){
+        if(showProgressBar)mProgressBar!!.visibility = View.GONE
+        client?.onPageFinished(view,webView,url)
     }
 
-    override fun onLoadResource(view: WebView?, url: String?){
-        client?.onLoadResource(view,url)
+    override fun onLoadResource(view: View?,webView: WebView?, url: String?){
+        client?.onLoadResource(this,webView,url)
     }
 
-    override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?){
-        client?.onReceivedError(view,request,error)
+    override fun onReceivedError(view: View?,webView: WebView?, request: WebResourceRequest?, error: WebResourceError?){
+        client?.onReceivedError(this,webView,request,error)
     }
 
-    override fun onJsAlert(view: WebView?, url: String?, message: String?, result: JsResult?){
-        client?.onJsAlert(view,url,message,result)
+    override fun onJsAlert(view: View?,webView: WebView?, url: String?, message: String?, result: JsResult?){
+        client?.onJsAlert(this,webView,url,message,result)
     }
 
-    override fun onJsConfirm(view: WebView?, url: String?, message: String?, result: JsResult?){
-        client?.onJsConfirm(view,url,message,result)
+    override fun onJsConfirm(view: View?,webView: WebView?, url: String?, message: String?, result: JsResult?){
+        client?.onJsConfirm(this,webView,url,message,result)
     }
 
-    override fun onJsPrompt(view: WebView?, url: String?, message: String?, defaultValue: String?, result: JsPromptResult?){
-        client?.onJsPrompt(view,url,message,defaultValue,result)
+    override fun onJsPrompt(view: View?,webView: WebView?, url: String?, message: String?, defaultValue: String?, result: JsPromptResult?){
+        client?.onJsPrompt(this,webView,url,message,defaultValue,result)
     }
 
-    override fun onProgressChanged(view: WebView?, newProgress: Int){
-        mProgressBar!!.progress = newProgress
-        client?.onProgressChanged(view,newProgress)
+    override fun onProgressChanged(view: View?,webView: WebView?, newProgress: Int){
+        if(showProgressBar)mProgressBar!!.progress = newProgress
+        client?.onProgressChanged(this,webView,newProgress)
     }
 
-    override fun onReceivedTitle(view: WebView?, title: String?){
-        client?.onReceivedTitle(view,title)
+    override fun onReceivedTitle(view: View?,webView: WebView?, title: String?){
+        client?.onReceivedTitle(this,webView,title)
+    }
+
+    override fun onHandlerResponseAction(view: View?, action: EChartsEventAction, data: String?) {
+        delegate?.onHandlerResponseAction(this,action,data)
+    }
+
+    override fun onHandlerResponseRemoveAction(view: View?, action: EChartsEventAction) {
+        delegate?.onHandlerResponseRemoveAction(this,action)
+    }
+
+    override fun echartOptions(view: View?): GsonOption? {
+        return dataSource?.echartOptions(this)
+    }
+    override fun echartOptionsString(view: View?): String{
+        val result: String? = dataSource?.echartOptionsString(this)
+        if (result == null) return GsonOption().toString()
+        return  result
+    }
+    override fun removeEChartActionEvents(view: View?):Array<EChartsEventAction>{
+        val result: Array<EChartsEventAction>? = dataSource?.removeEChartActionEvents(this)
+        if (result ==  null) return arrayOf()
+        return result
+    }
+    override fun addEChartActionEvents(view: View?):Array<EChartsEventAction>{
+        val result: Array<EChartsEventAction>? = dataSource?.addEChartActionEvents(this)
+        if (result ==  null) return arrayOf()
+        return result
     }
 
     fun canBack(): Boolean {
