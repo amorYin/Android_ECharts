@@ -4,9 +4,7 @@
 Baidu ECharts in Android
 ## Demo截图
 
-<div><img src="https://github.com/amorYin/Android_ECharts/blob/master/images/331581665532_.pic.jpg" width = "48%" height = "auto" align=left/><img src="https://github.com/amorYin/Android_ECharts/blob/master/images/341581665533_.pic.jpg" width = "48%" height = "auto" align=right/></div>
-<div height = "10"/>
-<div><img src="https://github.com/amorYin/Android_ECharts/blob/master/images/371581665536_.pic.jpg" width = "48%" height = "auto"/><img src="https://github.com/amorYin/Android_ECharts/blob/master/images/361581665535_.pic.jpg" width = "48%" height = "auto"/></div>
+<div><img src="https://github.com/amorYin/Android_ECharts/blob/master/images/331581665532_.pic.jpg" width = "25%" height = "auto"/><img src="https://github.com/amorYin/Android_ECharts/blob/master/images/341581665533_.pic.jpg" width = "25%" height = "auto"/><img src="https://github.com/amorYin/Android_ECharts/blob/master/images/371581665536_.pic.jpg" width = "25%" height = "auto"/><img src="https://github.com/amorYin/Android_ECharts/blob/master/images/361581665535_.pic.jpg" width = "25%" height = "auto"/></div>
 
 ## 集成指南
 第一步. 在您的主项目`build.gradle`添加以下内容:
