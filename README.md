@@ -1,6 +1,6 @@
 # Android_ECharts
 [![当前版本](https://jitpack.io/v/amorYin/Android_ECharts.svg)](https://jitpack.io/#amorYin/Android_ECharts)
-## Baidu ECharts in Android
+Baidu ECharts in Android
 ## Demo截图
 
 ![图标效果](https://github.com/amorYin/Android_ECharts/blob/master/images/331581665532_.pic.jpg)![地图效果](https://github.com/amorYin/Android_ECharts/blob/master/images/341581665533_.pic.jpg)
