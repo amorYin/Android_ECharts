@@ -24,10 +24,6 @@ class EChartView @JvmOverloads constructor(private val mContext: Context, attrs:
     internal var mProgressBar: ProgressBar? = null
     internal var client: EChartsWebClient? = null
 
-    fun setClient(data: EChartsWebClient?){
-        client = data
-    }
-
     var url: String? = null
 
     init {
@@ -39,17 +35,22 @@ class EChartView @JvmOverloads constructor(private val mContext: Context, attrs:
         mWebView = view.findViewById(R.id.web_view) as EChartWebView
         mProgressBar = view.findViewById(R.id.progress_bar) as ProgressBar
         mWebView!!.setClient(this)
+        setType(-1);
     }
 
-
-    fun setType(type: Int) {
+    //测试使用
+    private fun setType(type: Int) {
         mWebView!!.setType(type)
     }
-
+    //  webview事件代理
+    fun setClient(data: EChartsWebClient?){
+        client = data
+    }
+    //数据源代理
     fun setDataSource(data: EChartsDataSource) {
         mWebView!!.setDataSource(data)
     }
-
+    // 自定义事件代理
     fun setDelegate(data: EChartsEventHandler) {
         mWebView!!.setDelegate(data)
     }
@@ -61,7 +62,7 @@ class EChartView @JvmOverloads constructor(private val mContext: Context, attrs:
 
     private fun initWebview(url: String) {
 
-        mWebView!!.loadContent(url)
+        mWebView!!.loadUrl(url)
 
         mWebView!!.setOnKeyListener(object : View.OnKeyListener {
             override fun onKey(v: View, keyCode: Int, event: KeyEvent): Boolean {

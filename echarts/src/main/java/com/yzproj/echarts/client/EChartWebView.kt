@@ -39,9 +39,9 @@ class EChartWebView @JvmOverloads constructor(context: Context, attrs: Attribute
     fun setType(type: Int) {
         var index = type
         if(type < 0 || type > 2) {
-            loadContent("file:///android_asset/echart/biz/echart.html")
+            loadUrl("file:///android_asset/echart/biz/echart.html")
         }else{
-            loadContent("file:///android_asset/echart/biz/echart-$index.html")
+            loadUrl("file:///android_asset/echart/biz/echart-$index.html")
         }
     }
     /**
@@ -109,8 +109,10 @@ class EChartWebView @JvmOverloads constructor(context: Context, attrs: Attribute
         }
 
         @JavascriptInterface
-        fun removeEChartActionEventResponse(param: String){
-
+        fun removeEChartActionEventResponse(action: String){
+            if (delegate != null){
+                delegate!!.onHandlerResponseRemoveAction(EChartsEventAction.convert(action))
+            }
         }
 
         @JavascriptInterface
@@ -166,13 +168,10 @@ class EChartWebView @JvmOverloads constructor(context: Context, attrs: Attribute
         loadUrl(call)
     }
 
-    /**
-     * load
-     */
-    fun loadContent(url:String?){
-        loadUrl(url)
+    override fun loadUrl(url: String?) {
+        super.loadUrl(url)
         // 设置WebViewClient
-        this.setWebViewClient(object : WebViewClient() {
+        webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                 view?.loadUrl(url)
                 client?.shouldOverrideUrlLoading(view,request)
@@ -196,15 +195,15 @@ class EChartWebView @JvmOverloads constructor(context: Context, attrs: Attribute
             }
 
             override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
-//				view.loadData(errorHtml, "text/html; charset=UTF-8", null);
+    //				view.loadData(errorHtml, "text/html; charset=UTF-8", null);
                 hideLoading()
                 client?.onReceivedError(view,request,error)
                 super.onReceivedError(view, request, error)
             }
-        })
+        }
 
         // 设置WebChromeClient
-        this.setWebChromeClient(object : WebChromeClient() {
+        webChromeClient = object : WebChromeClient() {
             override fun onJsAlert(view: WebView?, url: String?, message: String?, result: JsResult?): Boolean {
                 client?.onJsAlert(view,url,message,result)
                 return super.onJsAlert(view, url, message, result)
@@ -229,6 +228,6 @@ class EChartWebView @JvmOverloads constructor(context: Context, attrs: Attribute
                 client?.onReceivedTitle(view,title)
                 super.onReceivedTitle(view, title)
             }
-        })
+        }
     }
 }

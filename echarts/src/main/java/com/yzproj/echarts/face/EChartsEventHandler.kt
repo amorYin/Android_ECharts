@@ -9,4 +9,5 @@ package com.yzproj.echarts.face
  */
 interface EChartsEventHandler {
     fun onHandlerResponseAction(action:EChartsEventAction,data:String?)
+    fun onHandlerResponseRemoveAction(action:EChartsEventAction){}
 }
