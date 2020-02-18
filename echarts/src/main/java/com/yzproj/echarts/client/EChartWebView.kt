@@ -7,6 +7,8 @@ package com.yzproj.echarts.client
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
+import android.os.Handler
+import android.os.Message
 import android.util.AttributeSet
 import android.view.View
 import android.webkit.*
@@ -16,6 +18,7 @@ import com.yzproj.echarts.face.EChartsDataSource
 import com.yzproj.echarts.face.EChartsEventAction
 import com.yzproj.echarts.face.EChartsEventHandler
 import com.yzproj.echarts.face.EChartsWebClient
+import kotlin.concurrent.thread
 
 class EChartWebView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
     : WebView(context, attrs, defStyleAttr) {
@@ -49,6 +52,10 @@ class EChartWebView @JvmOverloads constructor(context: Context, attrs: Attribute
      */
     private var chartLoaded:Boolean = false
 
+    fun isChartLoaded():Boolean{
+        return chartLoaded
+    }
+
     private val mWebView:WebView = this;
     /**
      * dataSource
@@ -69,10 +76,24 @@ class EChartWebView @JvmOverloads constructor(context: Context, attrs: Attribute
         delegate = data
     }
 
+    private val mHandler:Handler = Handler(Handler.Callback { msg ->
+
+        if (msg.what == 1){
+            val action = msg.obj.toString()
+            delegate?.onHandlerResponseRemoveAction(mWebView,EChartsEventAction.convert(action))
+        }else if (msg.what == 2){
+            val obj = msg.obj as Array<String?>
+            val action = obj.get(0);val data = obj.get(1)
+            delegate?.onHandlerResponseAction(mWebView,EChartsEventAction.convert(action!!),data)
+        }
+
+        false
+    })
+
     /**
      * refresh
      */
-    fun refreshEchartsWithOption(option: GsonOption){
+    fun refreshEchartsWithOption(option: GsonOption?){
         val optionString = option.toString()
         val call = "javascript:refreshEchartsWithOption('$optionString')"
         loadUrl(call)
@@ -112,12 +133,14 @@ class EChartWebView @JvmOverloads constructor(context: Context, attrs: Attribute
 
         @JavascriptInterface
         fun removeEChartActionEventResponse(action: String){
-            delegate?.onHandlerResponseRemoveAction(mWebView,EChartsEventAction.convert(action))
+            val msg = Message();msg.what = 1;msg.obj = action
+            mHandler.sendMessageDelayed(msg,1)
         }
 
         @JavascriptInterface
         fun onEChartActionEventResponse(action: String,data:String?){
-            delegate?.onHandlerResponseAction(mWebView,EChartsEventAction.convert(action),data)
+            val msg = Message();msg.what = 2;msg.obj = arrayOf(action,data)
+            mHandler.sendMessageDelayed(msg,1)
         }
     }
 

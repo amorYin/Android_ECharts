@@ -61,9 +61,12 @@
      *刷新图表
      */
     function refreshEchartsWithOption(echartJson) {
-//        showDebugMessage("refreshEchartsWithOption");
         //refresh
         showChartLoading();
+        getMyChart().clear();
+        if(echartJson === 'null'){
+            echartJson = initChartOptions();
+        }
         var option = JSON.parse(echartJson);
         option = preTask(option);
         getMyChart().setOption(option, true);//刷新，带上第二个参数true

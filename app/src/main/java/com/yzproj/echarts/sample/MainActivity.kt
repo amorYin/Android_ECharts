@@ -71,6 +71,7 @@ class MainActivity : AppCompatActivity(),EChartsDataSource, EChartsEventHandler 
     }
 
     override fun onHandlerResponseAction(view:View?,action: EChartsEventAction,data:String?) {
-        Toast.makeText(baseContext,data,Toast.LENGTH_SHORT).show()
+//        Toast.makeText(baseContext,data,Toast.LENGTH_SHORT).show()
+        chartView2.refreshEchartsWithOption(null)
     }
 }

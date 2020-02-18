@@ -56,17 +56,22 @@ class EChartView @JvmOverloads constructor(private val mContext: Context, attrs:
     fun setClient(data: EChartsWebClient?){
         client = data
     }
+    //判断数据源是否加载
+    fun isChartLoaded():Boolean{
+        return mWebView!!.isChartLoaded()
+    }
     //数据源代理
     fun setDataSource(data: EChartsDataSource) {
-//        mWebView!!.setDataSource(data)
         dataSource = data
     }
     // 自定义事件代理
     fun setDelegate(data: EChartsEventHandler) {
-//        mWebView!!.setDelegate(data)
         delegate = data
     }
-
+    // 刷新数据源
+    fun refreshEchartsWithOption(option: GsonOption?){
+        return mWebView!!.refreshEchartsWithOption(option)
+    }
     fun loadUrl(url: String?) {
         if (url == null) return
         initWebview(url)
