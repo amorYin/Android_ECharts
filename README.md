@@ -1,8 +1,7 @@
 # Android_ECharts
 [![当前版本](https://jitpack.io/v/amorYin/Android_ECharts.svg)](https://jitpack.io/#amorYin/Android_ECharts)
-```html
-<font color="#999999">Baidu ECharts in Android</font> 0.0.7版本已修复地图显示钓鱼岛、赤尾屿。中国地图一点都不能少
-```
+Baidu ECharts in Android 
+<p>0.0.7版本已修复地图显示钓鱼岛、赤尾屿。中国地图一点都不能少</p>
 ## Demo截图
 
 <div><img src="https://github.com/amorYin/Android_ECharts/blob/master/images/331581665532_.pic.jpg" width = "25%" height = "auto"/><img src="https://github.com/amorYin/Android_ECharts/blob/master/images/341581665533_.pic.jpg" width = "25%" height = "auto"/><img src="https://github.com/amorYin/Android_ECharts/blob/master/images/371581665536_.pic.jpg" width = "25%" height = "auto"/><img src="https://github.com/amorYin/Android_ECharts/blob/master/images/361581665535_.pic.jpg" width = "25%" height = "auto"/></div>
