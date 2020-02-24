@@ -54,6 +54,12 @@
         var option = JSON.parse(echartJson);
         option = preTask(option);
         getMyChart().setOption(option);
+        myChart.dispatchAction({
+            type: 'takeGlobalCursor',
+            key: 'dataZoomSelect',
+            // 启动或关闭
+            dataZoomSelectActive: true
+        });
         hideChartLoading();
     }
 
@@ -69,7 +75,7 @@
         }
         var option = JSON.parse(echartJson);
         option = preTask(option);
-        getMyChart().setOption(option, true);//刷新，带上第二个参数true
+        getMyChart().setOption(option, true,false,true);//刷新，带上第二个参数true
         hideChartLoading();
     }
 
@@ -116,7 +122,7 @@
      */
     function removeEchartActionHandler(eventName) {
 //        showDebugMessage("removeEchartActionHandler:" + eventName);
-        getMyChart().un(name, removeEchartViewAction);
+        getMyChart().off(name, removeEchartViewAction);
     }
     function removeEchartViewAction(action) {
 //        showDebugMessage("removeEchartViewAction:" + action.event.type);
