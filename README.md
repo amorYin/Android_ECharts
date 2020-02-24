@@ -1,30 +1,32 @@
 # Android_ECharts
 [![当前版本](https://jitpack.io/v/amorYin/Android_ECharts.svg)](https://jitpack.io/#amorYin/Android_ECharts)
-
-<font color="#999999">Baidu ECharts in Android</font>
+Baidu ECharts in Android 
+<p>0.0.7版本已修复地图显示钓鱼岛、赤尾屿。中国地图一点都不能少</p>
 ## Demo截图
 
 <div><img src="https://github.com/amorYin/Android_ECharts/blob/master/images/331581665532_.pic.jpg" width = "25%" height = "auto"/><img src="https://github.com/amorYin/Android_ECharts/blob/master/images/341581665533_.pic.jpg" width = "25%" height = "auto"/><img src="https://github.com/amorYin/Android_ECharts/blob/master/images/371581665536_.pic.jpg" width = "25%" height = "auto"/><img src="https://github.com/amorYin/Android_ECharts/blob/master/images/361581665535_.pic.jpg" width = "25%" height = "auto"/></div>
 
 ## 集成指南
 第一步. 在您的主项目`build.gradle`添加以下内容:
-
+```gradle
 	allprojects {
 		repositories {
 			...
 			maven { url 'https://jitpack.io' }
 		}
 	}
+```
 
 第二步. 在 `dependency` 中添加以下依赖
-
+```gradle
 	dependencies {
 		implementation 'com.github.abel533:ECharts:3.0.0.6'
 	        implementation 'com.github.amorYin:Android_ECharts:0.0.5'
 	}
+```
 ## EChartView使用指南
 在 使用的Activity的 `layout` 文件中引入
-```
+```xml
     <com.yzproj.echarts.client.EChartView
        	android:id="@+id/chartView"
         android:layout_width="match_parent"
@@ -32,13 +34,13 @@
         android:layout_marginBottom="56dp"/>
 ```
 Activity中初始化chartView，必须实现`EChartsDataSource` 接口,可实现`EChartsEventHandler`、`EChartsWebClient`两个接口
-```
+```kotlin
 	chartView = findViewById(R.id.chartView);
         chartView.setDataSource(this);//EChartsDataSource 必须实现
         chartView.setDelegate(this);//EChartsWebClient 页面加载回调 
 ```
 Activity例子
-```
+```kotlin
 ***
 class MainActivity : AppCompatActivity(),EChartsDataSource, EChartsEventHandler {
 
@@ -91,25 +93,24 @@ class MainActivity : AppCompatActivity(),EChartsDataSource, EChartsEventHandler 
         Toast.makeText(baseContext,data,Toast.LENGTH_SHORT).show()
     }
 }
-
 ```
 ---
 ### `EChartsDataSource`接口有四个方法
 >[GsonOption](https://github.com/amorYin/ECharts)
-```
+```kotlin
     fun echartOptions(view: View?): GsonOption? {return null} //返回一个GsonOption，优先使用，和第二个方法必须实现一个
     fun echartOptionsString(view: View?): String{ return GsonOption().toString() } //返回json字符串
     fun removeEChartActionEvents(view: View?):Array<EChartsEventAction>{return arrayOf()} //删除事件集合
     fun addEChartActionEvents(view: View?):Array<EChartsEventAction>{return arrayOf()} //添加事件集合
 ```
 ### `EChartsEventHandler`接口有四个方法
-```
+```kotlin
     //如果实现了dataSource的添加事件方法的事件触发回调
     fun onHandlerResponseAction(view: View?,action:EChartsEventAction,data:String?)
     fun onHandlerResponseRemoveAction(view: View?,action:EChartsEventAction){}
 ```
 ### `EChartsEventAction`事件枚举,目前支持下列事件
-```
+```kotlin
     None                ("undefine"),//未定义
     Resize              ("resize"),//调整
     Click               ("click"),
@@ -127,7 +128,7 @@ class MainActivity : AppCompatActivity(),EChartsDataSource, EChartsEventHandler 
     TimelineChanged     ("timelinechanged");
 ```
 ### `EChartsWebClient`是页面加载的web接口，如果想要控制可实现
-```
+```kotlin
     fun shouldOverrideUrlLoading(view: View?, webView: WebView?, request: WebResourceRequest?){}
 
     fun onPageStarted(view: View?, webView: WebView?, url: String?, favicon: Bitmap?){}
